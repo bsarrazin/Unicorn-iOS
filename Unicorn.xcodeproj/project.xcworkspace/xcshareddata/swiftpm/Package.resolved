@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Bedrock",
+        "repositoryURL": "git@github.com:bsarrazin/Bedrock-iOS.git",
+        "state": {
+          "branch": null,
+          "revision": "5ea625c0b56b2f1bff9971a3ce71790d7c22dd09",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
