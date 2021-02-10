@@ -1,0 +1,31 @@
+name: Run All Tests
+
+on: [push, pull_request]
+
+jobs:
+  scan:
+    name: Run All Tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setting Up Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer
+
+      - name: Adding Private SSH Key
+        run: echo "${{ secrets.UNICORN_SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+
+      - name: Adding Public SSH Key
+        run: echo "${{ secrets.UNICORN_SSH_KEY_PUBLIC }}" > ~/.ssh/id_rsa.pub
+
+      - name: Setting Permissions & Adding SSH Key
+        run:  chmod 400 ~/.ssh/id_rsa && chmod 400 ~/.ssh/id_rsa.pub && ssh-add ~/.ssh/id_rsa
+
+      - name: Adding GitHub to known_hosts
+        run: for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
+
+      - name: Resolving Package Dependencies
+        run: xcodebuild -resolvePackageDependencies
+
+      - name: Running All Tests
+        run: xcodebuild test -project Unicorn.xcodeproj -scheme Unicorn-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12 Pro' | xcpretty
