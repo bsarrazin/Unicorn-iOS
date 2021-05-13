@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Defect Report (triage required)
+    about: Create a defect report that will show in the defect triage board
+    url: https://github.com/bsarrazin/Unicorn/issues/new?&labels=bug&template=bug_report.md&projects=bsarrazin/Unicorn/1
